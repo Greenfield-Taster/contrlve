@@ -30,7 +30,6 @@ function Card({
         width={480}
         height={360}
         alt=""
-        loading="lazy"
         className="aspect-video w-full rounded-xl object-cover transition-transform duration-200 group-hover:scale-[1.03]"
       />
       <span className="mt-2 block font-brand text-sm text-white/50">
