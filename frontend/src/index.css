@@ -199,3 +199,28 @@ body::before {
     animation: none;
   }
 }
+
+/* Тонкий брендовий скролбар для горизонтальних стрічок: скріншотів
+   застосунку і стрічки гостей, яка стає прокручуваною при reduced-motion */
+.scroll-x,
+.marquee {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-mark) rgb(255 255 255 / 0.12);
+}
+
+.scroll-x::-webkit-scrollbar,
+.marquee::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scroll-x::-webkit-scrollbar-track,
+.marquee::-webkit-scrollbar-track {
+  background: rgb(255 255 255 / 0.12);
+  border-radius: 999px;
+}
+
+.scroll-x::-webkit-scrollbar-thumb,
+.marquee::-webkit-scrollbar-thumb {
+  background: var(--color-mark);
+  border-radius: 999px;
+}

@@ -42,7 +42,7 @@ export function AppSection() {
           </div>
         </div>
 
-        <ul className="m-0 flex list-none gap-4 overflow-x-auto p-0 pb-2">
+        <ul className="scroll-x m-0 flex list-none gap-4 overflow-x-auto p-0 pb-3">
           {appInfo.screenshots.map((src) => (
             <li key={src} className="shrink-0">
               <img
