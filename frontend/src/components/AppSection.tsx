@@ -2,8 +2,11 @@ import { Button } from './Button'
 import { Mark } from './Mark'
 import { Section } from './Section'
 import { appInfo } from '../data/app'
+import { useDragScroll } from '../hooks/useDragScroll'
 
 export function AppSection() {
+  const strip = useDragScroll<HTMLUListElement>()
+
   return (
     <Section id="app" title={<>Гра в <Mark>телефоні</Mark></>}>
       <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:items-center">
@@ -42,7 +45,12 @@ export function AppSection() {
           </div>
         </div>
 
-        <ul className="scroll-x m-0 flex list-none gap-4 overflow-x-auto p-0 pb-3">
+        <ul
+          ref={strip}
+          tabIndex={0}
+          aria-label="Скріншоти застосунку"
+          className="scroll-x m-0 flex list-none gap-4 overflow-x-auto p-0 pb-3"
+        >
           {appInfo.screenshots.map((src) => (
             <li key={src} className="shrink-0">
               <img
@@ -51,6 +59,7 @@ export function AppSection() {
                 height={1300}
                 alt=""
                 loading="lazy"
+                draggable={false}
                 className="h-[420px] w-auto rounded-2xl border border-white/15"
               />
             </li>

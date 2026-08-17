@@ -219,6 +219,18 @@ body::before {
   height: 8px;
 }
 
+/* Там, де є курсор, стрічку можна тягнути ним, як пальцем на телефоні */
+@media (hover: hover) {
+  .scroll-x {
+    cursor: grab;
+  }
+
+  .scroll-x.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+}
+
 .scroll-x::-webkit-scrollbar-track,
 .marquee::-webkit-scrollbar-track {
   background: rgb(255 255 255 / 0.12);

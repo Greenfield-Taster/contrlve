@@ -23,6 +23,12 @@ describe('AppSection', () => {
     expect(screen.getByText(/поки лише для iPhone/i)).toBeInTheDocument()
   })
 
+  it('стрічка скріншотів підписана і доступна з клавіатури', () => {
+    render(<AppSection />)
+    const strip = screen.getByRole('list', { name: 'Скріншоти застосунку' })
+    expect(strip).toHaveAttribute('tabindex', '0')
+  })
+
   it('показує всі скріншоти', () => {
     const { container } = render(<AppSection />)
     const shots = container.querySelectorAll('img[src^="/app/screenshot"]')
