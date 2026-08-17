@@ -46,3 +46,60 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+.mark {
+  position: relative;
+  display: inline-block;
+  padding: 0.05em 0.18em;
+  color: #fff;
+  background-color: transparent;
+  background-image: linear-gradient(var(--color-mark), var(--color-mark));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 320ms ease-out, color 320ms ease-out;
+}
+
+.mark--revealed {
+  background-size: 100% 100%;
+  color: var(--color-ink);
+}
+
+/* Маркери виділення, як на логотипі: лівий згори, правий знизу */
+.mark::before,
+.mark::after {
+  content: '';
+  position: absolute;
+  width: 0.32em;
+  height: 0.32em;
+  border-radius: 50%;
+  background: var(--color-handle);
+  opacity: 0;
+  transition: opacity 200ms ease-out 260ms;
+}
+
+.mark::before {
+  left: -0.1em;
+  top: -0.14em;
+}
+
+.mark::after {
+  right: -0.1em;
+  bottom: -0.14em;
+}
+
+.mark--revealed::before,
+.mark--revealed::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark {
+    background-size: 100% 100%;
+    color: var(--color-ink);
+  }
+
+  .mark::before,
+  .mark::after {
+    opacity: 1;
+  }
+}
