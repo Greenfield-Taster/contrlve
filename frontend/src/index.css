@@ -109,10 +109,14 @@ body::before {
   }
 }
 
+/* До 768px фото розкладені по всій ширині через left і стоять на нижньому
+   краї. Десктопний зсув --hero-shift тут навмисно не застосовується: він
+   підібраний під ряд на md+ і на телефоні стягнув би всі чотири в купу. */
 .hero-photo {
   position: absolute;
   bottom: 0;
   left: var(--hero-left);
+  transform: translate3d(var(--hero-tilt-x, 0), var(--hero-tilt-y, 0), 0);
 }
 
 @media (min-width: 768px) {
@@ -120,6 +124,8 @@ body::before {
     position: relative;
     left: auto;
     bottom: auto;
+    transform: var(--hero-shift)
+      translate3d(var(--hero-tilt-x, 0), var(--hero-tilt-y, 0), 0);
   }
 }
 

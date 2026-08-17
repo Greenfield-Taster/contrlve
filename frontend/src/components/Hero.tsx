@@ -7,7 +7,11 @@ import { hosts } from '../data/hosts'
 import { firstRules, lastRule } from '../data/rules'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
-/** Зсуви фото, підібрані під чинний сайт: Мигаль найдалі праворуч, Разбєйков ліворуч */
+/**
+ * Зсуви фото для десктопного ряду, підібрані під чинний сайт: Мигаль найдалі
+ * праворуч, Разбєйков ліворуч. До 768px не застосовуються — там фото стоять
+ * абсолютно і розкладені по всій ширині через `--hero-left`.
+ */
 const photoOffsets: Record<string, string> = {
   myhal: 'translate(60%, 45%)',
   andrienko: 'translate(30%, 40%)',
@@ -87,15 +91,15 @@ export function Hero() {
             height={835}
             alt={`${host.name} — ШОУ КОНТРЛВЕ`}
             loading="eager"
-            className="hero-photo h-auto w-[60%] self-end md:w-[20%]"
+            className="hero-photo h-auto w-[34%] self-end md:w-[20%]"
             style={
               {
-                // До 768px фото стоять по краях і перекриваються, як на чинному
-                // сайті: крайні підрізає екран, разом вони тримають нижній край
-                '--hero-left': `${index * 24 - 14}%`,
-                transform: `${photoOffsets[host.id]} translate3d(${
-                  tilt.x * (index % 2 === 0 ? 1 : -1)
-                }px, ${tilt.y}px, 0)`,
+                // Крок 24% при ширині 34%: чотири фото займають усю ширину
+                // від -3% до 103%, перекриваючись сусідів на 10%
+                '--hero-left': `${index * 24 - 3}%`,
+                '--hero-shift': photoOffsets[host.id],
+                '--hero-tilt-x': `${tilt.x * (index % 2 === 0 ? 1 : -1)}px`,
+                '--hero-tilt-y': `${tilt.y}px`,
                 zIndex: host.id === 'yanovych' ? 3 : 1,
               } as CSSProperties
             }
