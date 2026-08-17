@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { WordsForm } from './WordsForm'
@@ -122,6 +122,38 @@ describe('WordsForm', () => {
     })
     document.dispatchEvent(event)
 
-    expect((screen.getAllByRole('textbox')[0] as HTMLInputElement).value).toBe('домофон')
+    await waitFor(() =>
+      expect((screen.getAllByRole('textbox')[0] as HTMLInputElement).value).toBe('домофон'),
+    )
+  })
+
+  it('подвійний клік «Відправити» не відправляє двічі', async () => {
+    let resolveSubmit: (value: {
+      text: string
+      copied: boolean
+      attempts: number
+    }) => void = () => {}
+    vi.mocked(submitWords).mockReturnValue(
+      new Promise((resolve) => {
+        resolveSubmit = resolve
+      }),
+    )
+
+    const user = userEvent.setup()
+    render(<WordsForm />)
+
+    await fillWords(user, ['пилосос', 'валідол', 'шифер'])
+    const button = screen.getByRole('button', { name: 'Відправити' })
+    await user.click(button)
+    await user.click(button)
+
+    expect(submitWords).toHaveBeenCalledTimes(1)
+
+    resolveSubmit({
+      text: 'КОНТРЛВЕ, мої три слова: пилосос, валідол, шифер',
+      copied: true,
+      attempts: 1,
+    })
+    await screen.findByText(/скопіювали/i)
   })
 })

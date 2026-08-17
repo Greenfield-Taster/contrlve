@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { flushSync } from 'react-dom'
 import { Mark } from './Mark'
 import { Section } from './Section'
 import { playlistUrl } from '../data/episodes'
@@ -38,6 +37,7 @@ export function WordsForm() {
   const [issues, setIssues] = useState<WordIssue[]>([])
   const [sent, setSent] = useState<Sent | null>(null)
   const [attempts, setAttempts] = useState(0)
+  const [sending, setSending] = useState(false)
   const formRef = useRef<HTMLFormElement | null>(null)
 
   useEffect(() => {
@@ -54,14 +54,12 @@ export function WordsForm() {
       const pasted = event.clipboardData?.getData('text')?.trim()
       if (!pasted) return
 
-      flushSync(() => {
-        setWords((current) => {
-          const emptyIndex = current.findIndex((word) => word.trim().length === 0)
-          if (emptyIndex === -1) return current
-          const next = [...current]
-          next[emptyIndex] = pasted.split(/\s+/)[0]
-          return next
-        })
+      setWords((current) => {
+        const emptyIndex = current.findIndex((word) => word.trim().length === 0)
+        if (emptyIndex === -1) return current
+        const next = [...current]
+        next[emptyIndex] = pasted.split(/\s+/)[0]
+        return next
       })
 
       formRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'center' })
@@ -78,14 +76,21 @@ export function WordsForm() {
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
+    if (sending) return
+
     const found = validateWords(words)
     setIssues(found)
     if (hasBlockingIssues(found)) return
 
-    const trimmed = words.map((word) => word.trim())
-    const result = await submitWords(trimmed)
-    setSent({ words: trimmed, copied: result.copied })
-    setAttempts(result.attempts)
+    setSending(true)
+    try {
+      const trimmed = words.map((word) => word.trim())
+      const result = await submitWords(trimmed)
+      setSent({ words: trimmed, copied: result.copied })
+      setAttempts(result.attempts)
+    } finally {
+      setSending(false)
+    }
   }
 
   const issueFor = (index: number) => issues.find((issue) => issue.index === index)
@@ -147,7 +152,8 @@ export function WordsForm() {
         <div className="mt-6 flex flex-wrap gap-3">
           <button
             type="submit"
-            className="rounded-full bg-cta px-6 py-3 font-brand text-white transition-colors hover:bg-cta-hover active:scale-[0.97]"
+            disabled={sending}
+            className="rounded-full bg-cta px-6 py-3 font-brand text-white transition-colors hover:bg-cta-hover active:scale-[0.97] disabled:opacity-60"
           >
             Відправити
           </button>
@@ -176,8 +182,8 @@ export function WordsForm() {
           className="mt-10 rounded-2xl border border-white/15 bg-black/50 p-6 md:p-10"
         >
           <p className="m-0 flex flex-wrap gap-2 font-brand text-[clamp(20px,3vw,32px)]">
-            {sent.words.map((word) => (
-              <Mark key={word} instant>
+            {sent.words.map((word, index) => (
+              <Mark key={`${word}-${index}`} instant>
                 {word}
               </Mark>
             ))}
