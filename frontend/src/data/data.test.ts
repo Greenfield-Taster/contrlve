@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { episodes, thumbnailUrl, watchUrl } from './episodes'
+import { episodes, latestEpisode, thumbnailUrl, watchUrl } from './episodes'
 import { hosts } from './hosts'
 import { firstRules } from './rules'
 import { socials } from './socials'
@@ -91,5 +91,13 @@ describe('randomWords', () => {
   it('має щонайменше двадцять унікальних слів', () => {
     expect(randomWords.length).toBeGreaterThanOrEqual(20)
     expect(new Set(randomWords).size).toBe(randomWords.length)
+  })
+})
+
+describe('latestEpisode', () => {
+  it('це випуск з найбільшим номером, а не просто останній у масиві', () => {
+    const highest = Math.max(...episodes.map((e) => e.number))
+    expect(latestEpisode.number).toBe(highest)
+    expect(episodes).toContainEqual(latestEpisode)
   })
 })

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Mark } from './Mark'
 import { Section } from './Section'
-import { playlistUrl } from '../data/episodes'
+import { latestEpisode, watchUrl } from '../data/episodes'
 import { randomWords } from '../data/randomWords'
 import { socials } from '../data/socials'
 import { readAttempts } from '../lib/attempts'
@@ -195,7 +195,7 @@ export function WordsForm() {
 
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href={playlistUrl}
+                href={watchUrl(latestEpisode.videoId)}
                 target="_blank"
                 rel="noopener"
                 className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"

@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { WordsForm } from './WordsForm'
 import { submitWords } from '../lib/submitWords'
+import { latestEpisode, watchUrl } from '../data/episodes'
 
 // Мокаємо саме точку «відправки»: справжній буфер обміну в jsdom конфліктує
 // з тим, що підміняє userEvent.setup(), і тест ставав би флакі.
@@ -155,5 +156,16 @@ describe('WordsForm', () => {
       attempts: 1,
     })
     await screen.findByText(/скопіювали/i)
+  })
+
+  it('веде коментувати під останній випуск, а не в плейлист', async () => {
+    const user = userEvent.setup()
+    render(<WordsForm />)
+
+    await fillWords(user, ['пилосос', 'валідол', 'шифер'])
+    await user.click(screen.getByRole('button', { name: 'Скопіювати слова' }))
+
+    const link = await screen.findByRole('link', { name: /коментарі на youtube/i })
+    expect(link).toHaveAttribute('href', watchUrl(latestEpisode.videoId))
   })
 })

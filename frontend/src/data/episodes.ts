@@ -37,3 +37,12 @@ export const episodes: Episode[] = [
   { number: 19, guest: 'Марк Куцевалов', videoId: 'iErhH5Wu8hs' },
   { number: 20, guest: 'Влад Шевченко', videoId: 'scUEwXZcsH4' },
 ]
+
+/**
+ * Найсвіжіший випуск — під ним є сенс лишати коментар зі своїми словами.
+ * Шукаємо за номером, а не беремо останній елемент: якщо команда допише
+ * випуск не в кінець масиву, посилання не має тихо поїхати не туди.
+ */
+export const latestEpisode: Episode = episodes.reduce((latest, episode) =>
+  episode.number > latest.number ? episode : latest,
+)
