@@ -35,4 +35,18 @@ describe('splitByWords', () => {
     const segments = splitByWords('пилосос', ['пилосос'])
     expect(segments).toEqual([{ text: 'пилосос', marked: true }])
   })
+
+  it('коли одне слово — префікс іншого з тим самим початком, перемагає довше, незалежно від порядку', () => {
+    const short = splitByWords('валідол', ['вал', 'валідол'])
+    const long = splitByWords('валідол', ['валідол', 'вал'])
+    const expected = [{ text: 'валідол', marked: true }]
+    expect(short).toEqual(expected)
+    expect(long).toEqual(expected)
+  })
+
+  it('конкатенація шматків відтворює вихідний текст', () => {
+    const text = 'дістає пилосос, потім валідол і шифер'
+    const segments = splitByWords(text, ['валідол', 'вал', 'шифер', 'пилосос'])
+    expect(segments.map((s) => s.text).join('')).toBe(text)
+  })
 })

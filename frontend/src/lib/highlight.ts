@@ -24,7 +24,9 @@ export function splitByWords(text: string, words: string[]): Segment[] {
     }
   }
 
-  hits.sort((a, b) => a.start - b.start)
+  // Найдовший збіг з однаковим початком має перемагати — щоб коротше слово,
+  // яке є префіксом/підрядком довшого (напр. 'вал' у 'валідол'), не «з'їдало» решту.
+  hits.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start))
 
   const segments: Segment[] = []
   let cursor = 0
