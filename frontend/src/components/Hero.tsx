@@ -48,8 +48,10 @@ export function Hero() {
   }, [reduced])
 
   return (
-    <section className="relative flex min-h-[100dvh] flex-col justify-between overflow-hidden">
-      <div className="flex flex-1 flex-col items-center justify-center gap-8 px-6 pt-16 text-center">
+    <section className="relative flex min-h-[86dvh] flex-col justify-between overflow-hidden md:min-h-[100dvh]">
+      {/* До 768px блок притиснутий догори: центрування лишало 149px порожнечі
+          над логотипом. На md+ його центрує вільна висота, як і раніше. */}
+      <div className="flex flex-1 flex-col items-center justify-start gap-8 px-6 pt-14 text-center md:justify-center md:pt-16">
         <h1 className="m-0">
           <img
             src="/logo.webp"
