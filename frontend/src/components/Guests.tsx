@@ -9,12 +9,20 @@ import {
   type Episode,
 } from '../data/episodes'
 
-function Card({ episode }: { episode: Episode }) {
+function Card({
+  episode,
+  duplicate = false,
+}: {
+  episode: Episode
+  /** Копія для безшовної стрічки: видима, але поза Tab-порядком. */
+  duplicate?: boolean
+}) {
   return (
     <a
       href={watchUrl(episode.videoId)}
       target="_blank"
       rel="noreferrer"
+      tabIndex={duplicate ? -1 : undefined}
       className="group block w-[240px] shrink-0 md:w-[300px]"
     >
       <img
@@ -50,7 +58,7 @@ function Row({
         </div>
         <div className="marquee__group" data-marquee-copy aria-hidden="true">
           {items.map((episode) => (
-            <Card key={`copy-${episode.videoId}`} episode={episode} />
+            <Card key={`copy-${episode.videoId}`} episode={episode} duplicate />
           ))}
         </div>
       </div>

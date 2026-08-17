@@ -45,6 +45,32 @@ describe('Guests', () => {
     // рівно по одному посиланню на випуск.
     const count = (row: Element) =>
       within(row as HTMLElement).getAllByRole('link').length
-    expect(count(top) + count(bottom)).toBe(episodes.length)
+    const half = Math.ceil(episodes.length / 2)
+    expect(count(top)).toBe(half)
+    expect(count(bottom)).toBe(episodes.length - half)
+  })
+
+  it('ряди їдуть назустріч один одному', () => {
+    const { container } = render(<Guests />)
+    const [top, bottom] = container.querySelectorAll('[data-marquee-row]')
+    expect(top.querySelector('.marquee__track')).toHaveClass('marquee__track--left')
+    expect(bottom.querySelector('.marquee__track')).toHaveClass('marquee__track--right')
+  })
+
+  it('приховані копії не потрапляють у Tab-порядок', () => {
+    const { container } = render(<Guests />)
+    const copies = container.querySelectorAll('[data-marquee-copy] a')
+    expect(copies.length).toBeGreaterThan(0)
+    for (const link of copies) {
+      expect(link).toHaveAttribute('tabindex', '-1')
+    }
+    // Справжні (не задубльовані) картки лишаються у звичайному Tab-порядку.
+    const real = container.querySelectorAll(
+      '.marquee__group:not([data-marquee-copy]) a',
+    )
+    expect(real.length).toBe(episodes.length)
+    for (const link of real) {
+      expect(link).not.toHaveAttribute('tabindex')
+    }
   })
 })
