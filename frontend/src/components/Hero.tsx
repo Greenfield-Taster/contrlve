@@ -78,7 +78,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="pointer-events-none relative flex h-[26vh] w-full items-end justify-center md:h-[30vh]">
+      <div className="pointer-events-none relative flex h-[30vh] min-h-[180px] w-full items-end justify-center md:h-[32vh] md:min-h-0">
         {hosts.map((host, index) => (
           <img
             key={host.id}
@@ -87,10 +87,12 @@ export function Hero() {
             height={835}
             alt={`${host.name} — ШОУ КОНТРЛВЕ`}
             loading="eager"
-            className="hero-photo h-auto w-[46%] max-w-[240px] self-end md:w-[20%] md:max-w-none"
+            className="hero-photo h-auto w-[60%] self-end md:w-[20%]"
             style={
               {
-                '--hero-left': `${index * 22 - 8}%`,
+                // До 768px фото стоять по краях і перекриваються, як на чинному
+                // сайті: крайні підрізає екран, разом вони тримають нижній край
+                '--hero-left': `${index * 24 - 14}%`,
                 transform: `${photoOffsets[host.id]} translate3d(${
                   tilt.x * (index % 2 === 0 ? 1 : -1)
                 }px, ${tilt.y}px, 0)`,
