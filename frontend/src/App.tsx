@@ -1,3 +1,4 @@
+import { AppSection } from './components/AppSection'
 import { Cast } from './components/Cast'
 import { Guests } from './components/Guests'
 import { Hero } from './components/Hero'
@@ -10,6 +11,7 @@ export default function App() {
       <HowToPlay />
       <Cast />
       <Guests />
+      <AppSection />
     </main>
   )
 }
