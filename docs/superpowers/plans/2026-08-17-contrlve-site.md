@@ -206,7 +206,7 @@ Expected: PASS, 5 тестів.
   --color-ink: #0a0a0a;
   --color-cta: #e5091a;
   --color-cta-hover: #c00718;
-  --font-display: Gothic, system-ui, sans-serif;
+  --font-brand: Gothic, system-ui, sans-serif;
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -1258,13 +1258,12 @@ export function Mark({ children, instant = false }: MarkProps) {
   position: relative;
   display: inline-block;
   padding: 0.05em 0.18em;
-  color: var(--color-ink);
+  color: #fff;
   background-color: transparent;
   background-image: linear-gradient(var(--color-mark), var(--color-mark));
   background-repeat: no-repeat;
   background-size: 0% 100%;
   transition: background-size 320ms ease-out, color 320ms ease-out;
-  color: #fff;
 }
 
 .mark--revealed {
@@ -1403,10 +1402,10 @@ type ButtonProps = {
 
 export function Button({ href, children, variant = 'cta' }: ButtonProps) {
   const base =
-    'inline-flex items-center justify-center rounded-full px-6 py-3 font-[Gothic] text-base transition-transform duration-100 active:scale-[0.97]'
+    'inline-flex items-center justify-center rounded-full px-6 py-3 font-brand text-base transition-transform duration-100 active:scale-[0.97]'
   const styles =
     variant === 'cta'
-      ? 'bg-[var(--color-cta)] text-white hover:bg-[var(--color-cta-hover)]'
+      ? 'bg-cta text-white hover:bg-cta-hover'
       : 'border border-white/60 text-white hover:border-white hover:bg-white/10'
 
   return (
@@ -1427,7 +1426,7 @@ export function Button({ href, children, variant = 'cta' }: ButtonProps) {
 `frontend/src/components/Hero.tsx`:
 
 ```tsx
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Button } from './Button'
 import { Mark } from './Mark'
 import { appInfo } from '../data/app'
@@ -1485,15 +1484,15 @@ export function Hero() {
           />
         </h1>
 
-        <p className="m-0 max-w-2xl font-[Gothic] text-[clamp(20px,3.4vw,34px)] leading-tight">
+        <p className="m-0 max-w-2xl font-brand text-[clamp(20px,3.4vw,34px)] leading-tight">
           гра, у якій слова <Mark instant>ховають</Mark> у чужих історіях
         </p>
 
         <div>
-          <p className="m-0 mb-2 font-[Gothic] text-sm uppercase tracking-[0.2em] text-white/60">
+          <p className="m-0 mb-2 font-brand text-sm uppercase tracking-[0.2em] text-white/60">
             офіційні правила
           </p>
-          <ol className="m-0 list-decimal pl-6 text-left font-[Gothic] text-[clamp(15px,1.6vw,20px)]">
+          <ol className="m-0 list-decimal pl-6 text-left font-brand text-[clamp(15px,1.6vw,20px)]">
             <li>{rule}</li>
             <li>{lastRule}</li>
           </ol>
@@ -1516,14 +1515,16 @@ export function Hero() {
             height={835}
             alt={`${host.name} — ШОУ КОНТРЛВЕ`}
             loading="eager"
-            className="absolute bottom-0 h-auto w-[46%] max-w-[240px] self-end md:relative md:w-[20%] md:max-w-none"
-            style={{
-              transform: `${photoOffsets[host.id]} translate3d(${
-                tilt.x * (index % 2 === 0 ? 1 : -1)
-              }px, ${tilt.y}px, 0)`,
-              left: `${index * 22 - 8}%`,
-              zIndex: host.id === 'yanovych' ? 3 : 1,
-            }}
+            className="hero-photo h-auto w-[46%] max-w-[240px] self-end md:w-[20%] md:max-w-none"
+            style={
+              {
+                '--hero-left': `${index * 22 - 8}%`,
+                transform: `${photoOffsets[host.id]} translate3d(${
+                  tilt.x * (index % 2 === 0 ? 1 : -1)
+                }px, ${tilt.y}px, 0)`,
+                zIndex: host.id === 'yanovych' ? 3 : 1,
+              } as CSSProperties
+            }
           />
         ))}
       </div>
@@ -1532,7 +1533,30 @@ export function Hero() {
 }
 ```
 
-- [ ] **Step 5: Підключити героя і перевірити тест**
+- [ ] **Step 5: Додати позиціонування фото**
+
+Дописати в кінець `frontend/src/index.css`. Абсолютні позиції потрібні лише на
+телефоні — на десктопі фото стоять у ряд, і зсуви їм дає `transform`.
+
+```css
+.hero-photo {
+  position: absolute;
+  bottom: 0;
+  left: var(--hero-left);
+}
+
+@media (min-width: 768px) {
+  .hero-photo {
+    position: relative;
+    left: auto;
+    bottom: auto;
+  }
+}
+```
+
+Додати `frontend/src/index.css` до списку файлів, які змінює ця задача.
+
+- [ ] **Step 6: Підключити героя і перевірити тест**
 
 `frontend/src/App.tsx`:
 
@@ -1551,13 +1575,13 @@ export default function App() {
 Run: `cd frontend; npx vitest run src/components/Hero.test.tsx`
 Expected: PASS, 4 тести.
 
-- [ ] **Step 6: Перевірити очима**
+- [ ] **Step 7: Перевірити очима**
 
 Run: `cd frontend; npm run dev`
 
 Перевірити на ширині 390px і 1440px: герой уміщається в екран разом з кнопками, фото підрізані нижнім краєм і не мають горизонтального скролу, лого не блимає підміною шрифту.
 
-- [ ] **Step 7: Коміт**
+- [ ] **Step 8: Коміт**
 
 ```bash
 git add frontend/src
@@ -1653,7 +1677,7 @@ type SectionProps = {
 export function Section({ id, title, children }: SectionProps) {
   return (
     <section id={id} className="mx-auto w-full max-w-6xl px-6 py-20 md:py-28">
-      <h2 className="m-0 mb-10 font-[Gothic] text-[clamp(28px,4.5vw,56px)] leading-tight">
+      <h2 className="m-0 mb-10 font-brand text-[clamp(28px,4.5vw,56px)] leading-tight">
         {title}
       </h2>
       {children}
@@ -1691,10 +1715,10 @@ export function HowToPlay() {
             key={step.number}
             className="rounded-2xl border border-white/15 bg-black/40 p-6 backdrop-blur-sm"
           >
-            <span className="block font-[Gothic] text-4xl text-[var(--color-mark)]">
+            <span className="block font-brand text-4xl text-mark">
               {step.number}
             </span>
-            <span className="mt-2 block font-[Gothic] text-xl">{step.text}</span>
+            <span className="mt-2 block font-brand text-xl">{step.text}</span>
           </li>
         ))}
       </ol>
@@ -1715,7 +1739,7 @@ export function HowToPlay() {
         <button
           type="button"
           onClick={() => setShown((value) => !value)}
-          className="mt-6 rounded-full border border-white/60 px-5 py-2 font-[Gothic] transition-colors hover:bg-white/10"
+          className="mt-6 rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
         >
           {shown ? 'Сховати' : 'Показати слова'}
         </button>
@@ -1816,10 +1840,10 @@ export function Cast() {
               className="h-auto w-full transition-transform duration-300 group-hover:scale-[1.03]"
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-4">
-              <span className="block font-[Gothic] text-lg">{host.name}</span>
+              <span className="block font-brand text-lg">{host.name}</span>
               <span className="block text-sm text-white/60">{host.role}</span>
               {host.caption && (
-                <span className="mt-2 inline-block bg-[var(--color-mark)] px-2 py-0.5 font-[Gothic] text-sm text-[var(--color-ink)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+                <span className="mt-2 inline-block bg-mark px-2 py-0.5 font-brand text-sm text-ink opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
                   {host.caption}
                 </span>
               )}
@@ -1953,10 +1977,10 @@ function Card({ episode }: { episode: Episode }) {
         loading="lazy"
         className="aspect-video w-full rounded-xl object-cover transition-transform duration-200 group-hover:scale-[1.03]"
       />
-      <span className="mt-2 block font-[Gothic] text-sm text-white/50">
+      <span className="mt-2 block font-brand text-sm text-white/50">
         випуск {episode.number}
       </span>
-      <span className="block font-[Gothic] text-lg">{episode.guest}</span>
+      <span className="block font-brand text-lg">{episode.guest}</span>
     </a>
   )
 }
@@ -2168,7 +2192,7 @@ export function AppSection() {
               className="h-20 w-20 rounded-2xl"
             />
             <div>
-              <p className="m-0 font-[Gothic] text-2xl">КОНТРЛВЕ</p>
+              <p className="m-0 font-brand text-2xl">КОНТРЛВЕ</p>
               <p className="m-0 text-white/60">
                 {appInfo.price} · {appInfo.minOs}
               </p>
@@ -2181,8 +2205,8 @@ export function AppSection() {
             заховати випадкові слова. Таймер, бали і таблиця лідерів усередині.
           </p>
 
-          <p className="mt-4 font-[Gothic] text-xl">
-            <span className="text-[var(--color-mark)]">★ {appInfo.rating}</span>{' '}
+          <p className="mt-4 font-brand text-xl">
+            <span className="text-mark">★ {appInfo.rating}</span>{' '}
             <span className="text-white/60">· {appInfo.ratingCount} оцінок</span>
           </p>
 
@@ -2491,7 +2515,7 @@ export function WordsForm() {
               <div key={index}>
                 <label
                   htmlFor={`word-${index}`}
-                  className="mb-2 block font-[Gothic] text-sm uppercase tracking-[0.2em] text-white/50"
+                  className="mb-2 block font-brand text-sm uppercase tracking-[0.2em] text-white/50"
                 >
                   Слово {index + 1}
                 </label>
@@ -2503,12 +2527,12 @@ export function WordsForm() {
                   autoComplete="off"
                   onChange={(event) => setWord(index, event.target.value)}
                   aria-invalid={issue?.blocking ? true : undefined}
-                  className="w-full rounded-xl border border-white/25 bg-black/50 px-4 py-3 font-[Gothic] text-xl outline-none focus:border-[var(--color-mark)]"
+                  className="w-full rounded-xl border border-white/25 bg-black/50 px-4 py-3 font-brand text-xl outline-none focus:border-mark"
                 />
                 {issue && (
                   <p
                     className={`m-0 mt-2 text-sm ${
-                      issue.blocking ? 'text-[var(--color-cta)]' : 'text-white/50'
+                      issue.blocking ? 'text-cta' : 'text-white/50'
                     }`}
                   >
                     {issue.message}
@@ -2521,7 +2545,7 @@ export function WordsForm() {
 
         <div aria-live="polite">
           {formIssue && (
-            <p className="m-0 mt-4 font-[Gothic] text-[var(--color-cta)]">
+            <p className="m-0 mt-4 font-brand text-cta">
               {formIssue.message}
             </p>
           )}
@@ -2530,7 +2554,7 @@ export function WordsForm() {
         <div className="mt-6 flex flex-wrap gap-3">
           <button
             type="submit"
-            className="rounded-full bg-[var(--color-cta)] px-6 py-3 font-[Gothic] text-white transition-colors hover:bg-[var(--color-cta-hover)] active:scale-[0.97]"
+            className="rounded-full bg-cta px-6 py-3 font-brand text-white transition-colors hover:bg-cta-hover active:scale-[0.97]"
           >
             Відправити
           </button>
@@ -2540,7 +2564,7 @@ export function WordsForm() {
               setWords(pickThree())
               setIssues([])
             }}
-            className="rounded-full border border-white/60 px-6 py-3 font-[Gothic] transition-colors hover:bg-white/10"
+            className="rounded-full border border-white/60 px-6 py-3 font-brand transition-colors hover:bg-white/10"
           >
             Не знаю, придумай
           </button>
@@ -2558,7 +2582,7 @@ export function WordsForm() {
           aria-live="polite"
           className="mt-10 rounded-2xl border border-white/15 bg-black/50 p-6 md:p-10"
         >
-          <p className="m-0 flex flex-wrap gap-2 font-[Gothic] text-[clamp(20px,3vw,32px)]">
+          <p className="m-0 flex flex-wrap gap-2 font-brand text-[clamp(20px,3vw,32px)]">
             {sent.words.map((word) => (
               <Mark key={word} instant>
                 {word}
@@ -2577,7 +2601,7 @@ export function WordsForm() {
               href={playlistUrl}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-white/60 px-5 py-2 font-[Gothic] transition-colors hover:bg-white/10"
+              className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
             >
               Коментарі на YouTube
             </a>
@@ -2585,7 +2609,7 @@ export function WordsForm() {
               href={threadsUrl}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-white/60 px-5 py-2 font-[Gothic] transition-colors hover:bg-white/10"
+              className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
             >
               Threads
             </a>
@@ -2593,7 +2617,7 @@ export function WordsForm() {
               href={instagramUrl}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-white/60 px-5 py-2 font-[Gothic] transition-colors hover:bg-white/10"
+              className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
             >
               Instagram
             </a>
@@ -2702,12 +2726,12 @@ export function Socials() {
               href={social.url}
               target="_blank"
               rel="noreferrer"
-              className="flex h-full flex-col justify-between rounded-2xl border border-white/15 bg-black/40 p-6 transition-colors hover:border-[var(--color-mark)]"
+              className="flex h-full flex-col justify-between rounded-2xl border border-white/15 bg-black/40 p-6 transition-colors hover:border-mark"
             >
-              <span className="font-[Gothic] text-2xl">{social.label}</span>
+              <span className="font-brand text-2xl">{social.label}</span>
               <span className="mt-1 text-white/50">{social.handle}</span>
               {social.followers !== null && (
-                <span className="mt-6 font-[Gothic] text-3xl text-[var(--color-mark)]">
+                <span className="mt-6 font-brand text-3xl text-mark">
                   {formatFollowers(social.followers)}
                 </span>
               )}
