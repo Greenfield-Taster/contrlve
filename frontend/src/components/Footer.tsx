@@ -2,11 +2,11 @@ import { socials } from '../data/socials'
 
 export function Footer() {
   return (
-    <footer className="mx-auto w-full max-w-6xl px-6 pb-16">
-      <div className="flex flex-col gap-6 border-t border-white/15 pt-8 md:flex-row md:items-center md:justify-between">
+    <footer className="mx-auto w-full max-w-6xl px-6 pb-16 text-center md:text-left">
+      <div className="flex flex-col items-center gap-6 border-t border-white/15 pt-8 md:flex-row md:items-center md:justify-between">
         <img src="/logo.webp" width={600} height={214} alt="ШОУ КОНТРЛВЕ" className="w-32" />
 
-        <nav className="flex flex-wrap gap-4">
+        <nav className="flex flex-wrap justify-center gap-4">
           {socials.map((social) => (
             <a
               key={social.id}
