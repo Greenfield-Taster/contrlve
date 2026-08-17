@@ -18,7 +18,7 @@ export function Button({ href, children, variant = 'cta' }: ButtonProps) {
     <a
       href={href}
       target="_blank"
-      rel="noreferrer"
+      rel="noopener"
       className={`${base} ${styles}`}
     >
       {children}

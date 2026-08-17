@@ -12,14 +12,14 @@ export function Socials() {
             <a
               href={social.url}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="flex h-full flex-col justify-between rounded-2xl border border-white/15 bg-black/40 p-6 transition-colors hover:border-mark"
             >
               <span className="font-brand text-2xl">{social.label}</span>
               <span className="mt-1 text-white/50">{social.handle}</span>
               {social.followers !== null && (
-                <span className="mt-6 font-brand text-3xl text-mark">
-                  {formatFollowers(social.followers)}
+                <span className="mt-6 font-brand text-3xl">
+                  <Mark instant>{formatFollowers(social.followers)}</Mark>
                 </span>
               )}
             </a>

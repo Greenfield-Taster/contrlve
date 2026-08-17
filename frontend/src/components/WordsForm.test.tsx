@@ -40,7 +40,7 @@ describe('WordsForm', () => {
     const user = userEvent.setup()
     render(<WordsForm />)
 
-    await user.click(screen.getByRole('button', { name: 'Відправити' }))
+    await user.click(screen.getByRole('button', { name: 'Скопіювати слова' }))
 
     expect(screen.getByText('три — це три')).toBeInTheDocument()
   })
@@ -50,7 +50,7 @@ describe('WordsForm', () => {
     render(<WordsForm />)
 
     await fillWords(user, ['я', 'валідол', 'шифер'])
-    await user.click(screen.getByRole('button', { name: 'Відправити' }))
+    await user.click(screen.getByRole('button', { name: 'Скопіювати слова' }))
 
     expect(screen.getByText('це не слово')).toBeInTheDocument()
   })
@@ -60,7 +60,7 @@ describe('WordsForm', () => {
     render(<WordsForm />)
 
     await fillWords(user, ['пилосос', 'валідол', 'шифер'])
-    await user.click(screen.getByRole('button', { name: 'Відправити' }))
+    await user.click(screen.getByRole('button', { name: 'Скопіювати слова' }))
 
     expect(await screen.findByText(/скопіювали/i)).toBeInTheDocument()
     expect(submitWords).toHaveBeenCalledWith(['пилосос', 'валідол', 'шифер'])
@@ -71,7 +71,7 @@ describe('WordsForm', () => {
     render(<WordsForm />)
 
     await fillWords(user, ['я', 'валідол', 'шифер'])
-    await user.click(screen.getByRole('button', { name: 'Відправити' }))
+    await user.click(screen.getByRole('button', { name: 'Скопіювати слова' }))
 
     expect(submitWords).not.toHaveBeenCalled()
   })
@@ -86,7 +86,7 @@ describe('WordsForm', () => {
     render(<WordsForm />)
 
     await fillWords(user, ['пилосос', 'валідол', 'шифер'])
-    await user.click(screen.getByRole('button', { name: 'Відправити' }))
+    await user.click(screen.getByRole('button', { name: 'Скопіювати слова' }))
 
     expect(await screen.findByText(/скопіюй руками/i)).toBeInTheDocument()
   })
@@ -143,7 +143,7 @@ describe('WordsForm', () => {
     render(<WordsForm />)
 
     await fillWords(user, ['пилосос', 'валідол', 'шифер'])
-    const button = screen.getByRole('button', { name: 'Відправити' })
+    const button = screen.getByRole('button', { name: 'Скопіювати слова' })
     await user.click(button)
     await user.click(button)
 

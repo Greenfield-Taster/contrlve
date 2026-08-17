@@ -21,7 +21,7 @@ function Card({
     <a
       href={watchUrl(episode.videoId)}
       target="_blank"
-      rel="noreferrer"
+      rel="noopener"
       tabIndex={duplicate ? -1 : undefined}
       className="group block w-[240px] shrink-0 md:w-[300px]"
     >

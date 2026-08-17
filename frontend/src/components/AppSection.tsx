@@ -27,11 +27,11 @@ export function AppSection() {
           <p className="mt-6 text-lg leading-relaxed text-white/80">
             Збираєш компанію, ділишся на команди від двох до п'яти, і граєш у те
             саме, що й у шоу: монологи та мініатюри, у яких треба непомітно
-            заховати випадкові слова. Таймер, бали і таблиця лідерів усередині.
+            заховати випадкові слова. Таймер і підрахунок балів усередині.
           </p>
 
           <p className="mt-4 font-brand text-xl">
-            <span className="text-mark">★ {appInfo.rating}</span>{' '}
+            <span className="text-white/60">★</span> <Mark instant>{appInfo.rating}</Mark>{' '}
             <span className="text-white/60">· {appInfo.ratingCount} оцінок</span>
           </p>
 

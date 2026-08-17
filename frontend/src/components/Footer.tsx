@@ -12,7 +12,7 @@ export function Footer() {
               key={social.id}
               href={social.url}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="text-white/60 transition-colors hover:text-white"
             >
               {social.label}
@@ -21,8 +21,8 @@ export function Footer() {
         </nav>
       </div>
 
-      <p className="m-0 mt-8 text-sm text-white/30">© 2026 ШОУ КОНТРЛВЕ</p>
-      <p className="m-0 mt-1 text-sm text-white/30">
+      <p className="m-0 mt-8 text-sm text-white/60">© 2026 ШОУ КОНТРЛВЕ</p>
+      <p className="m-0 mt-1 text-sm text-white/60">
         Ведучий може змінити ці правила в будь який момент
       </p>
     </footer>

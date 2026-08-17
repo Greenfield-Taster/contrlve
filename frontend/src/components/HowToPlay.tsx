@@ -22,8 +22,8 @@ export function HowToPlay() {
             key={step.number}
             className="rounded-2xl border border-white/15 bg-black/40 p-6 backdrop-blur-sm"
           >
-            <span className="block font-brand text-4xl text-mark">
-              {step.number}
+            <span className="block font-brand text-4xl">
+              <Mark instant>{step.number}</Mark>
             </span>
             <span className="mt-2 block font-brand text-xl">{step.text}</span>
           </li>

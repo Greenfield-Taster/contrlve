@@ -130,7 +130,7 @@ export function WordsForm() {
                 {issue && (
                   <p
                     className={`m-0 mt-2 text-sm ${
-                      issue.blocking ? 'text-cta' : 'text-white/50'
+                      issue.blocking ? 'text-cta-text' : 'text-white/50'
                     }`}
                   >
                     {issue.message}
@@ -143,7 +143,7 @@ export function WordsForm() {
 
         <div aria-live="polite">
           {formIssue && (
-            <p className="m-0 mt-4 font-brand text-cta">
+            <p className="m-0 mt-4 font-brand text-cta-text">
               {formIssue.message}
             </p>
           )}
@@ -155,7 +155,7 @@ export function WordsForm() {
             disabled={sending}
             className="rounded-full bg-cta px-6 py-3 font-brand text-white transition-colors hover:bg-cta-hover active:scale-[0.97] disabled:opacity-60"
           >
-            Відправити
+            Скопіювати слова
           </button>
           <button
             type="button"
@@ -170,59 +170,58 @@ export function WordsForm() {
         </div>
 
         {attempts > 1 && !sent && (
-          <p className="m-0 mt-4 text-sm text-white/40">
+          <p className="m-0 mt-4 text-sm text-white/55">
             ти вже робив це {attempts} {pluralAttempts(attempts)}
           </p>
         )}
       </form>
 
-      {sent && (
-        <div
-          aria-live="polite"
-          className="mt-10 rounded-2xl border border-white/15 bg-black/50 p-6 md:p-10"
-        >
-          <p className="m-0 flex flex-wrap gap-2 font-brand text-[clamp(20px,3vw,32px)]">
-            {sent.words.map((word, index) => (
-              <Mark key={`${word}-${index}`} instant>
-                {word}
-              </Mark>
-            ))}
-          </p>
+      <div aria-live="polite">
+        {sent && (
+          <div className="mt-10 rounded-2xl border border-white/15 bg-black/50 p-6 md:p-10">
+            <p className="m-0 flex flex-wrap gap-2 font-brand text-[clamp(20px,3vw,32px)]">
+              {sent.words.map((word, index) => (
+                <Mark key={`${word}-${index}`} instant>
+                  {word}
+                </Mark>
+              ))}
+            </p>
 
-          <p className="m-0 mt-6 text-lg text-white/70">
-            {sent.copied
-              ? 'скопіювали. кидай у коменти під випуском'
-              : 'не вийшло скопіювати — виділи і скопіюй руками'}
-          </p>
+            <p className="m-0 mt-6 text-lg text-white/70">
+              {sent.copied
+                ? 'скопіювали. кидай у коменти під випуском'
+                : 'не вийшло скопіювати — виділи і скопіюй руками'}
+            </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a
-              href={playlistUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
-            >
-              Коментарі на YouTube
-            </a>
-            <a
-              href={threadsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
-            >
-              Threads
-            </a>
-            <a
-              href={instagramUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
-            >
-              Instagram
-            </a>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={playlistUrl}
+                target="_blank"
+                rel="noopener"
+                className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
+              >
+                Коментарі на YouTube
+              </a>
+              <a
+                href={threadsUrl}
+                target="_blank"
+                rel="noopener"
+                className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
+              >
+                Threads
+              </a>
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noopener"
+                className="rounded-full border border-white/60 px-5 py-2 font-brand transition-colors hover:bg-white/10"
+              >
+                Instagram
+              </a>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </Section>
   )
 }

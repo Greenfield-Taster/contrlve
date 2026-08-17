@@ -16,7 +16,7 @@ describe('Guests', () => {
     const first = screen.getAllByRole('link', { name: new RegExp(episodes[0].guest) })[0]
     expect(first).toHaveAttribute('href', expect.stringContaining(episodes[0].videoId))
     expect(first).toHaveAttribute('target', '_blank')
-    expect(first).toHaveAttribute('rel', expect.stringContaining('noreferrer'))
+    expect(first).toHaveAttribute('rel', expect.stringContaining('noopener'))
   })
 
   it('дублює список для безшовної стрічки, але копії сховані від читалок', () => {
