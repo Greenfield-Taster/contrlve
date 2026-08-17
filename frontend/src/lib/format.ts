@@ -4,7 +4,9 @@ export function formatFollowers(count: number): string {
     return `${millions.replace('.', ',')} млн`
   }
   if (count >= 1000) {
-    return `${Math.round(count / 1000)} тис.`
+    // Десяті, а не ціле: округлення до тисяч зробило б з 3773 «4 тис.»
+    const thousands = (count / 1000).toFixed(1).replace(/\.0$/, '')
+    return `${thousands.replace('.', ',')} тис.`
   }
   return String(count)
 }

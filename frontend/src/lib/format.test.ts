@@ -6,8 +6,14 @@ describe('formatFollowers', () => {
     expect(formatFollowers(264000)).toBe('264 тис.')
   })
 
-  it('округлює тисячі до цілих', () => {
-    expect(formatFollowers(12400)).toBe('12 тис.')
+  it('показує десяті в тисячах', () => {
+    expect(formatFollowers(12400)).toBe('12,4 тис.')
+  })
+
+  it('не прибільшує число округленням', () => {
+    expect(formatFollowers(3401)).toBe('3,4 тис.')
+    expect(formatFollowers(7466)).toBe('7,5 тис.')
+    expect(formatFollowers(3773)).toBe('3,8 тис.')
   })
 
   it('форматує мільйони з комою', () => {

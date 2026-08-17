@@ -22,20 +22,20 @@ export const socials: Social[] = [
     label: 'Instagram',
     handle: '@contrlve',
     url: 'https://www.instagram.com/contrlve/',
-    followers: null,
+    followers: 3401,
   },
   {
     id: 'threads',
     label: 'Threads',
     handle: '@contrlve',
     url: 'https://www.threads.com/@contrlve',
-    followers: null,
+    followers: 7466,
   },
   {
     id: 'tiktok',
     label: 'TikTok',
     handle: '@contrlve',
     url: 'https://www.tiktok.com/@contrlve',
-    followers: null,
+    followers: 3773,
   },
 ]
