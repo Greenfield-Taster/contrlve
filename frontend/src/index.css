@@ -136,3 +136,61 @@ body {
     opacity: 1;
   }
 }
+
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  gap: 1.25rem;
+}
+
+.marquee__group {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.marquee__track--left {
+  animation: marquee-left 60s linear infinite;
+}
+
+.marquee__track--right {
+  animation: marquee-right 60s linear infinite;
+}
+
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 0.625rem));
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(calc(-50% - 0.625rem));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+    mask-image: none;
+  }
+
+  .marquee__track {
+    animation: none;
+  }
+}
