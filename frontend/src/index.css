@@ -117,3 +117,22 @@ body {
     bottom: auto;
   }
 }
+
+/* Підпис на картці учасника: там, де є наведення, він ховається і
+   з'являється на hover або фокусі. На тач-пристроях наведення немає,
+   тож підпис видно завжди. */
+.cast-caption {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .cast-caption {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+
+  .cast-card:hover .cast-caption,
+  .cast-card:focus-within .cast-caption {
+    opacity: 1;
+  }
+}

@@ -9,7 +9,8 @@ export function Cast() {
         {hosts.map((host) => (
           <li
             key={host.id}
-            className="group relative overflow-hidden rounded-2xl border border-white/15 bg-black/50"
+            className="cast-card group relative overflow-hidden rounded-2xl border border-white/15 bg-black/50"
+            tabIndex={0}
           >
             <img
               src={host.photo}
@@ -23,7 +24,7 @@ export function Cast() {
               <span className="block font-brand text-lg">{host.name}</span>
               <span className="block text-sm text-white/60">{host.role}</span>
               {host.caption && (
-                <span className="mt-2 inline-block bg-mark px-2 py-0.5 font-brand text-sm text-ink opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+                <span className="mt-2 inline-block bg-mark px-2 py-0.5 font-brand text-sm text-ink cast-caption">
                   {host.caption}
                 </span>
               )}
