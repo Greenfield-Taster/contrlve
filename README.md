@@ -3,7 +3,6 @@
 A one-page site for the Ukrainian comedy show **КОНТРЛВЕ**, built to replace the show's current site at `contrlve.com.ua`. The show's logo is a line of selected text — Ctrl+V — and the whole page is built around that one idea.
 
 - **Live:** https://contrlve.pages.dev
-- **Case study:** https://horbachov.com/#projects
 - **Design spec:** [`docs/superpowers/specs/2026-08-17-contrlve-site-design.md`](docs/superpowers/specs/2026-08-17-contrlve-site-design.md)
 
 ## Overview
