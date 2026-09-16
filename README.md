@@ -1,59 +1,115 @@
-# КОНТРЛВЕ — сайт шоу
+# КОНТРЛВЕ — show website
 
-Односторінковий сайт українського гумористичного шоу КОНТРЛВЕ, який замінює
-нинішній `contrlve.com.ua`.
+A one-page site for the Ukrainian comedy show **КОНТРЛВЕ**, built to replace the show's current site at `contrlve.com.ua`. The show's logo is a line of selected text — Ctrl+V — and the whole page is built around that one idea.
 
-Дизайн-спека:
-[`docs/superpowers/specs/2026-08-17-contrlve-site-design.md`](docs/superpowers/specs/2026-08-17-contrlve-site-design.md).
+- **Live:** https://contrlve.pages.dev
+- **Case study:** https://horbachov.com/#projects
+- **Design spec:** [`docs/superpowers/specs/2026-08-17-contrlve-site-design.md`](docs/superpowers/specs/2026-08-17-contrlve-site-design.md)
 
-## Що на сайті
+## Overview
 
-Правила гри, резиденти й ведучий, стрічка гостей із двадцяти випусків,
-застосунок для iPhone, форма «три слова» і соцмережі з кількістю підписників.
+The page covers everything a first-time viewer needs: the rules of the game, the host and the resident players, a strip of guests from twenty episodes, the iPhone app, a "three words" form, and social links with follower counts.
 
-Бекенду немає. Форма трьох слів копіює слова в буфер обміну — нікуди їх не
-надсилає і нічого не зберігає.
+There is no backend. The three-words form copies the words to the clipboard; nothing is sent anywhere and nothing is stored.
 
-## Стек
+## Highlights
 
-React 19 · Vite · TypeScript · Tailwind v4. Без анімаційних бібліотек — усе на
-CSS і `IntersectionObserver`.
+- **No animation library.** Every effect is a CSS transition, a CSS animation or an `IntersectionObserver`. `prefers-reduced-motion: reduce` turns all of it off.
+- **Typed content.** Everything that changes lives in `frontend/src/data/`. A new episode is one line in `episodes.ts`; follower counts are numbers in `socials.ts`.
+- **No invented facts.** Follower counts, app ratings and episode counts come only from the data files. If a number is missing, the element renders without it.
+- **Static build.** The site is a folder of files on Cloudflare Pages.
 
-`WebStarter.AppHost` (Aspire) і `WebStarter.Server` лишаються в репо для
-локального запуску, але сайт від них не залежить.
+## Tech stack
 
-## Запуск
+| Layer | Choice |
+|---|---|
+| UI | React 19, TypeScript 6 |
+| Build | Vite 8 |
+| Styling | Tailwind CSS v4 |
+| Tests | Vitest 4, Testing Library, jsdom |
+| Lint | oxlint |
+| Local orchestration | .NET Aspire AppHost (optional) |
 
-```powershell
-aspire start        # AppHost: сервер + Vite разом
-```
+## Getting started
 
-Тільки фронтенд:
+Requirements: Node.js 22 or newer. For the Aspire path you also need the .NET 10 SDK and the Aspire CLI.
 
-```powershell
+Frontend only:
+
+```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-## Деплой
+Everything together, through Aspire:
 
-Статичний білд на Cloudflare Pages.
-
-```powershell
-cd frontend
-npm run build       # → frontend/dist
+```bash
+aspire start
 ```
 
-## Бренд
+The AppHost starts the Vite dev server next to the .NET server. The site itself never calls that server; it is kept only for local orchestration.
 
-Кольори, шрифт і зображення взяті з чинного `contrlve.com.ua`: жовтий
-`#FAE913`, маркери `#FDC20E`, чорний `#0a0a0a`, червоний CTA `#e5091a`, шрифт
-Social Gothic Bold. Логотип шоу — це виділений текст із маркерами, тобто
-Ctrl+V; сайт побудований навколо цієї метафори.
+## Scripts
 
-## Дані
+Run these from `frontend/`.
 
-Уся змінна частина — у `frontend/src/data/`: випуски, ведучий і резиденти,
-правила, соцмережі, застосунок. Новий випуск додається одним рядком у
-`episodes.ts`, кількість підписників — у `socials.ts`.
+| Script | What it does |
+|---|---|
+| `npm run dev` | Vite dev server |
+| `npm run build` | Type-check and build to `frontend/dist` |
+| `npm run preview` | Serve the production build locally |
+| `npm test` | Run the unit tests once |
+| `npm run test:watch` | Run the unit tests in watch mode |
+| `npm run lint` | oxlint |
+
+## Project structure
+
+```
+contrlve/
+├── frontend/                 # the site; the only folder that ships
+│   └── src/
+│       ├── components/       # page sections and UI pieces
+│       ├── data/             # all changeable content (see below)
+│       ├── hooks/
+│       ├── lib/
+│       ├── App.tsx
+│       └── main.tsx
+├── WebStarter.AppHost/       # .NET Aspire AppHost for local runs
+├── WebStarter.Server/        # ASP.NET Core server; not used by the site
+└── docs/                     # design spec
+```
+
+### Content files
+
+| File | Holds |
+|---|---|
+| `data/episodes.ts` | Episodes and their guests. Add an episode by adding one entry. |
+| `data/hosts.ts` | The host and the resident players |
+| `data/rules.ts` | Rules of the game |
+| `data/socials.ts` | Social links and follower counts |
+| `data/app.ts` | The iPhone app card |
+| `data/randomWords.ts` | The word pool for the three-words form |
+
+## Brand
+
+Colours, type and imagery follow the existing `contrlve.com.ua`: yellow `#FAE913`, marker `#FDC20E`, black `#0a0a0a`, red call-to-action `#e5091a`, and Social Gothic Bold for display type. The show's logo is text selected with markers, that is, Ctrl+V, and the page keeps that metaphor throughout.
+
+## Deployment
+
+The site is a static build on Cloudflare Pages.
+
+```bash
+cd frontend
+npm run build      # → frontend/dist
+```
+
+Cloudflare Pages settings:
+
+- Root directory: `frontend`
+- Build command: `npm run build`
+- Build output directory: `dist`
+
+## License
+
+[MIT](LICENSE)
